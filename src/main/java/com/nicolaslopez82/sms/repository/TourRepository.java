@@ -3,12 +3,10 @@ package com.nicolaslopez82.sms.repository;
 import com.nicolaslopez82.sms.domain.Difficulty;
 import com.nicolaslopez82.sms.domain.Region;
 import com.nicolaslopez82.sms.domain.Tour;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +20,8 @@ import java.util.Optional;
  */
 
 public interface TourRepository extends CrudRepository<Tour, Integer> {
+
+    List<Tour> findByTourPackageCode(String code);
 
     /********************************************
      * BASIC EXAMPLES Spring Data Query Methods *
@@ -45,7 +45,7 @@ public interface TourRepository extends CrudRepository<Tour, Integer> {
     List<Tour> findByPriceContaining(Integer maxPrice);
     List<Tour> findByKeywordsContains(String keywords);
     List<Tour> findByTourPackageCodeAndBulletsLike(String code, String searchString);
-    List<Tour> findByTourPackageCodeAnAndDifficultyAndRegionAndPriceLessThan(String code, Difficulty difficulty, Region region, Integer maxPrice);
+    //List<Tour> findByTourPackageAnAndDifficultyAndRegionAndPriceLessThan(String code, Difficulty difficulty, Region region, Integer maxPrice);
 
     /***********************************************
      * ADVANCED EXAMPLES Spring Data Query Methods *
