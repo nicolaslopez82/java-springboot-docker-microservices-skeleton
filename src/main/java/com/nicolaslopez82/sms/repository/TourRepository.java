@@ -5,9 +5,12 @@ import com.nicolaslopez82.sms.domain.Region;
 import com.nicolaslopez82.sms.domain.Tour;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,6 +25,11 @@ import java.util.Optional;
  * 4. Parameter with data type of the entity attribute.
  */
 
+/**
+ * Controlling API Exposure
+ * @RepositoryRestResource(exported = false) Class annotation.
+ * @RestResource(exported = false) Method annotation.
+ */
 public interface TourRepository extends PagingAndSortingRepository<Tour, Integer> {
 
     Page<Tour> findByTourPackageCode(String code, Pageable pageable);
@@ -59,6 +67,33 @@ public interface TourRepository extends PagingAndSortingRepository<Tour, Integer
     //Same as
     List<Tour> findByTourPackageCodeAndDifficultyAndRegionAndPriceLessThan(String code, Difficulty difficulty, Region region, Integer maxPrice);
 
+    @Override
+    @RestResource(exported = false)
+    Iterable<Tour> findAll(Sort sort);
+
+    @Override
+    @RestResource(exported = false)
+    <S extends Tour> S save(S s);
+
+    @Override
+    @RestResource(exported = false)
+    <S extends Tour> Iterable<S> saveAll(Iterable<S> iterable);
+
+    @Override
+    @RestResource(exported = false)
+    void deleteById(Integer integer);
+
+    @Override
+    @RestResource(exported = false)
+    void delete(Tour tour);
+
+    @Override
+    @RestResource(exported = false)
+    void deleteAll(Iterable<? extends Tour> iterable);
+
+    @Override
+    @RestResource(exported = false)
+    void deleteAll();
 }
 
 
