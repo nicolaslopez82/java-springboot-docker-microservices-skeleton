@@ -3,8 +3,11 @@ package com.nicolaslopez82.sms.repository;
 import com.nicolaslopez82.sms.domain.Difficulty;
 import com.nicolaslopez82.sms.domain.Region;
 import com.nicolaslopez82.sms.domain.Tour;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,9 +22,9 @@ import java.util.Optional;
  * 4. Parameter with data type of the entity attribute.
  */
 
-public interface TourRepository extends CrudRepository<Tour, Integer> {
+public interface TourRepository extends PagingAndSortingRepository<Tour, Integer> {
 
-    List<Tour> findByTourPackageCode(String code);
+    Page<Tour> findByTourPackageCode(String code, Pageable pageable);
 
     /********************************************
      * BASIC EXAMPLES Spring Data Query Methods *
