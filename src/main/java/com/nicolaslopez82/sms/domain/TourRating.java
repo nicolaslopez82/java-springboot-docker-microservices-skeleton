@@ -7,8 +7,6 @@ import java.util.Objects;
 
 /**
  * Rating of a Tour by a Customer
- *
- * Created by Mary Ellen Bowman
  */
 @Entity
 public class TourRating {
