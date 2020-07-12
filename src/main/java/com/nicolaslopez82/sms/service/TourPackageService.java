@@ -17,8 +17,6 @@ public class TourPackageService {
         this.tourPackageRepository = tourPackageRepository;
     }
 
-    //TODO Create a Tour Package Injector.
-
     /**
      * Create a Tour Package
      *
