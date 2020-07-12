@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +47,7 @@ public class TourRatingController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createTourRating(@PathVariable(value = "tourId") int tourId,
-                                 @RequestBody @Valid RatingDto ratingDto){
+                                 @RequestBody @Validated RatingDto ratingDto){
         Tour tour = verifyTour(tourId);
         tourRatingRepository.save(new TourRating(new TourRatingPk(tour, ratingDto.getCustomerId()), ratingDto.getScore(), ratingDto.getComment()));
     }
@@ -59,7 +58,7 @@ public class TourRatingController {
      * @param tourId Tour Identifier
      * @return All Tour Ratings as RatingDto's
      */
-    @GetMapping
+    @GetMapping(path = "/ratings/tour")
     public List<RatingDto> getAllRatingsForTour(@PathVariable(value = "tourId") int tourId){
         verifyTour(tourId);
         return tourRatingRepository.findByPkTourId(tourId).stream()
