@@ -3,14 +3,16 @@ package com.nicolaslopez82.sms.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * A Classification of Tours.
  */
-
 @Entity
-public class TourPackage {
+@Table(name="tour_package")
+public class TourPackage implements Serializable {
     @Id
     private String code;
 

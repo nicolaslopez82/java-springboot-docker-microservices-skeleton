@@ -2,7 +2,6 @@ package com.nicolaslopez82.sms.service;
 
 import com.nicolaslopez82.sms.domain.Tour;
 import com.nicolaslopez82.sms.domain.TourRating;
-import com.nicolaslopez82.sms.domain.TourRatingPk;
 import com.nicolaslopez82.sms.repository.TourRatingRepository;
 import com.nicolaslopez82.sms.repository.TourRepository;
 import com.nicolaslopez82.sms.web.RatingDto;
@@ -38,9 +37,8 @@ public class TourRatingService {
      */
     public void createTourRating(Tour tour, RatingDto ratingDto) {
         tourRatingRepository.save(
-                new TourRating(
-                        new TourRatingPk(tour,
-                                ratingDto.getCustomerId()),
+                new TourRating(tour,
+                                ratingDto.getCustomerId(),
                                 ratingDto.getScore(),
                                 ratingDto.getComment()));
     }
@@ -52,7 +50,7 @@ public class TourRatingService {
      * @return All Tour Ratings as RatingDto's
      */
     public List<RatingDto> getAllRatingsForTour(Tour tour){
-        return tourRatingRepository.findByPkTourId(tour.getId()).stream()
+        return tourRatingRepository.findByTourId(tour.getId()).stream()
                 .map(RatingDto::new).collect(Collectors.toList());
     }
 
@@ -64,7 +62,7 @@ public class TourRatingService {
      * @return Requested page of Tour Ratings as RatingDto's
      */
     public Page<RatingDto> getRatings(Tour tour, Pageable pageable){
-        Page<TourRating> ratings = tourRatingRepository.findByPkTourId(tour.getId(), pageable);
+        Page<TourRating> ratings = tourRatingRepository.findByTourId(tour.getId(), pageable);
         return new PageImpl<>(
                 ratings.get().map(RatingDto::new).collect(Collectors.toList()),
                 pageable,
@@ -80,7 +78,7 @@ public class TourRatingService {
      */
     public Map<String, Double> getAverage(Tour tour){
         Map<String, Double> mapResult = new HashMap<>();
-        mapResult.put("average",tourRatingRepository.findByPkTourId(tour.getId()).stream()
+        mapResult.put("average",tourRatingRepository.findByTourId(tour.getId()).stream()
                 .mapToInt(TourRating::getScore).average()
                 .orElseThrow(() ->
                         new NoSuchElementException("Tour has no Ratings")));
@@ -95,7 +93,7 @@ public class TourRatingService {
      * @throws NoSuchElementException if no TourRating found
      */
     public TourRating verifyTourRating(Tour tour, int customerId) throws NoSuchElementException{
-        return tourRatingRepository.findByPkTourIdAndPkCustomerId(tour.getId(), customerId).orElseThrow(() ->
+        return tourRatingRepository.findByTourIdAndCustomerId(tour.getId(), customerId).orElseThrow(() ->
             new NoSuchElementException("\"Tour-Rating pair for request(\"\n" +
                     "                        + tourId + \" for customer\" + customerId))"));
     }
