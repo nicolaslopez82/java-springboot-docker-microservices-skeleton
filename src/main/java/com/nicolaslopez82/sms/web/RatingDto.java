@@ -1,7 +1,5 @@
 package com.nicolaslopez82.sms.web;
 
-import com.nicolaslopez82.sms.domain.TourRating;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -23,21 +21,13 @@ public class RatingDto {
     private Integer customerId;
 
     /**
-     * Construct a RatingDto from a fully instantiated TourRating.
-     *
-     * @param tourRating Tour Rating Object
-     */
-    public RatingDto(TourRating tourRating) {
-        this(tourRating.getScore(), tourRating.getComment(), tourRating.getCustomerId());
-    }
-    /**
      * Constructor to fully initialize the RatingDto
      *
-     * @param score score 1-5
-     * @param comment comment
-     * @param customerId customer identifier
+     * @param score
+     * @param comment
+     * @param customerId
      */
-    private RatingDto(Integer score, String comment, Integer customerId) {
+    public RatingDto(Integer score, String comment, Integer customerId) {
         this.score = score;
         this.comment = comment;
         this.customerId = customerId;
