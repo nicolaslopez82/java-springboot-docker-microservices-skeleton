@@ -1,12 +1,15 @@
 package com.nicolaslopez82.sms.web;
 
+import com.nicolaslopez82.sms.domain.RatingDtoModel;
 import com.nicolaslopez82.sms.domain.TourRating;
 import com.nicolaslopez82.sms.service.TourRatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,16 +24,18 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(path = "/tours/{tourId}/ratings")
 public class TourRatingController {
+
     private TourRatingService tourRatingService;
+
+    @Autowired
+    private RatingDtoModelAssembler ratingDtoModelAssembler;
 
     @Autowired
     public TourRatingController(TourRatingService tourRatingService) {
         this.tourRatingService = tourRatingService;
     }
 
-    protected TourRatingController() {
-
-    }
+    protected TourRatingController() {}
 
     /**
      * Create a Tour Rating.
@@ -64,15 +69,37 @@ public class TourRatingController {
      *
      * @param tourId
      * @param pageable
-     * @return
+     * @return Page<RatingDto>
+     */
+//    @GetMapping
+//    public Page<RatingDto> getAllRatingsForTour(@PathVariable(value = "tourId") int tourId, Pageable pageable) {
+//        Page<TourRating> tourRatingPage = tourRatingService.lookupRatings(tourId, pageable);
+//        List<RatingDto> ratingDtoList = tourRatingPage.getContent()
+//                .stream().map(tourRating -> toDto(tourRating)).collect(Collectors.toList());
+//        return new PageImpl<RatingDto>(ratingDtoList, pageable, tourRatingPage.getTotalPages());
+//    }
+
+    /**
+     * Lookup a the Ratings for a tour.
+     *
+     * @param tourId
+     * @return List<RatingDto>
      */
     @GetMapping
-    public Page<RatingDto> getAllRatingsForTour(@PathVariable(value = "tourId") int tourId, Pageable pageable) {
-        Page<TourRating> tourRatingPage = tourRatingService.lookupRatings(tourId, pageable);
-        List<RatingDto> ratingDtoList = tourRatingPage.getContent()
-                .stream().map(tourRating -> toDto(tourRating)).collect(Collectors.toList());
-        return new PageImpl<RatingDto>(ratingDtoList, pageable, tourRatingPage.getTotalPages());
+    public ResponseEntity<CollectionModel<RatingDto>> getAllRatingsForTour(@PathVariable(value = "tourId") int tourId) {
+        List<TourRating> tourRatingList = tourRatingService.lookupRatings(tourId);
+        List<RatingDto> ratingDtoList = tourRatingList.stream().map(tourRating -> toDto(tourRating)).collect(Collectors.toList());
+
+        return new ResponseEntity(
+                ratingDtoModelAssembler.toCollectionModel(ratingDtoList),
+                HttpStatus.OK);
     }
+//    @GetMapping
+//    public List<RatingDto> getAllRatingsForTour(@PathVariable(value = "tourId") int tourId) {
+//        List<TourRating> tourRatingList = tourRatingService.lookupRatings(tourId);
+//        List<RatingDto> ratingDtoList = tourRatingList.stream().map(tourRating -> toDto(tourRating)).collect(Collectors.toList());
+//        return ratingDtoList;
+//    }
 
     /**
      * Calculate the average Score of a Tour.

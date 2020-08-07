@@ -55,6 +55,17 @@ public class TourRatingService {
     }
 
     /**
+     * Get a list of tour ratings for a tour.
+     *
+     * @param tourId tour identifier
+     * @return List of TourRatings
+     * @throws NoSuchElementException if no Tour found.
+     */
+    public List<TourRating> lookupRatings(int tourId) throws NoSuchElementException  {
+        return tourRatingRepository.findByTourId(verifyTour(tourId).getId());
+    }
+
+    /**
      * Update some of the elements of a Tour Rating.
      *
      * @param tourId tour identifier
