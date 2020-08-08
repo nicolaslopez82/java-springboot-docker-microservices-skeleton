@@ -75,6 +75,14 @@ public class TourRating {
         }
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getScore() {
         return score;
     }

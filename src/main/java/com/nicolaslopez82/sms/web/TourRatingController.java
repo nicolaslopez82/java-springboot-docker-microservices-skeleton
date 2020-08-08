@@ -3,6 +3,8 @@ package com.nicolaslopez82.sms.web;
 import com.nicolaslopez82.sms.domain.Tour;
 import com.nicolaslopez82.sms.domain.TourRating;
 import com.nicolaslopez82.sms.service.TourRatingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,7 @@ import java.util.NoSuchElementException;
 @RequestMapping(path = "/tours/{tourId}/ratings")
 public class TourRatingController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TourRatingController.class);
     private TourRatingService tourRatingService;
 
     @Autowired
@@ -40,8 +43,25 @@ public class TourRatingController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createTourRating(@PathVariable(value = "tourId") int tourId,
                                  @RequestBody @Validated RatingDto ratingDto){
+        LOGGER.info("POST /tours/{}/ratings", tourId);
         Tour tour = verifyTour(tourId);
         tourRatingService.createTourRating(tour, ratingDto);
+    }
+
+    /**
+     * Create Several Tour Ratings for one tour, score and several customers.
+     *
+     * @param tourId
+     * @param score
+     * @param customers
+     */
+    @PostMapping("/{score}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createManyTourRatings(@PathVariable(value = "tourId") int tourId,
+                                      @PathVariable(value = "score") int score,
+                                      @RequestParam("customers") Integer customers[]) {
+        LOGGER.info("POST /tours/{}/ratings/{}", tourId, score);
+                tourRatingService.rateMany(tourId, score, customers);
     }
 
     /**
@@ -52,6 +72,7 @@ public class TourRatingController {
      */
     @GetMapping(path = "/ratings/tour")
     public List<RatingDto> getAllRatingsForTour(@PathVariable(value = "tourId") int tourId){
+        LOGGER.info("GET /ratings/tour", tourId);
         Tour tour = verifyTour(tourId);
         return tourRatingService.getAllRatingsForTour(tour);
     }
@@ -77,6 +98,7 @@ public class TourRatingController {
      */
     @GetMapping(path = "/average")
     public Map<String, Double> getAverage(@PathVariable(value = "tourId") int tourId){
+        LOGGER.info("GET /tours/{}/ratings/average", tourId);
         Tour tour = verifyTour(tourId);
         return tourRatingService.getAverage(tour);
     }
@@ -101,9 +123,10 @@ public class TourRatingController {
      * @return The modified Rating DTO.
      */
     @PutMapping
-    public RatingDto updateWithPut(@PathVariable(value = "tourId") int tourId, @RequestBody @Validated RatingDto ratingDto) {
+    public RatingDto update(@PathVariable(value = "tourId") int tourId, @RequestBody @Validated RatingDto ratingDto) {
+        LOGGER.info("PUT /tours/{}/ratings", tourId);
         TourRating rating = verifyTourRating(tourId, ratingDto.getCustomerId());
-        return tourRatingService.updateWithPut(rating, ratingDto);
+        return tourRatingService.update(rating, ratingDto);
     }
 
     /**
@@ -115,6 +138,7 @@ public class TourRatingController {
      */
     @PatchMapping
     public RatingDto updateWithPatch(@PathVariable(value = "tourId") int tourId, @RequestBody @Validated RatingDto ratingDto) {
+        LOGGER.info("PATCH /tours/{}/ratings", tourId);
         TourRating rating = verifyTourRating(tourId, ratingDto.getCustomerId());
         return tourRatingService.updateWithPatch(rating, ratingDto);
     }
@@ -127,6 +151,7 @@ public class TourRatingController {
      */
     @DeleteMapping(path = "/{customerId}")
     public void delete(@PathVariable(value = "tourId") int tourId, @PathVariable(value = "customerId") int customerId) {
+        LOGGER.info("DELETE /tours/{}/ratings/{}", tourId, customerId);
         TourRating rating = verifyTourRating(tourId, customerId);
         tourRatingService.delete(rating, customerId);
     }
@@ -151,6 +176,8 @@ public class TourRatingController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoSuchElementException.class)
     public String return400(NoSuchElementException ex) {
+
+        LOGGER.error("Unable to complete transaction", ex);
         return ex.getMessage();
     }
 }
