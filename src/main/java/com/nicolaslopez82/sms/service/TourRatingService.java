@@ -45,6 +45,22 @@ public class TourRatingService {
     }
 
     /**
+     * Create a new Tour Rating in the database
+     *
+     * @param tourId tour identifier
+     * @param customerId customer identifier
+     * @param score score of the tour rating
+     * @param comment additional comment
+     * @throws NoSuchElementException if no Tour found.
+     */
+    public void createTourRating(int tourId, Integer customerId, Integer score, String comment) throws NoSuchElementException {
+        LOGGER.info("Create Rating for tour {} of customers {}", tourId, customerId);
+        tourRatingRepository.save(
+                new TourRating(verifyTour(tourId), customerId,
+                        score, comment));
+    }
+
+    /**
      * Get a ratings by id.
      *
      * @param id rating identifier

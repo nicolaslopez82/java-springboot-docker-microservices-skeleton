@@ -1,6 +1,7 @@
 package com.nicolaslopez82.sms.domain;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -60,8 +61,7 @@ public class Tour implements Serializable {
         this.region = region;
     }
 
-    protected Tour() {
-    }
+    public Tour() {}
 
     public Integer getId() {
         return id;
