@@ -71,6 +71,19 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+
+		<!-- Uncomment to try the The HAL Browser (for Spring Data REST)
+             Then navigate to http://localhost:8080/browser/index.html
+                <dependency>
+                    <groupId>org.springframework.data</groupId>
+                    <artifactId>spring-data-rest-hal-browser</artifactId>
+                </dependency>
+        -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.2.32</version>
+		</dependency>
     </dependencies>
 
 	<build>
