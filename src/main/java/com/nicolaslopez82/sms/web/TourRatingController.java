@@ -20,6 +20,7 @@ import java.util.NoSuchElementException;
  * Tour Rating Controller
  */
 @RestController
+@RestControllerAdvice
 @RequestMapping(path = "/tours/{tourId}/ratings")
 public class TourRatingController {
 
@@ -71,6 +72,7 @@ public class TourRatingController {
      * @return All Tour Ratings as RatingDto's
      */
     @GetMapping(path = "/ratings/tour")
+    @ResponseStatus(HttpStatus.OK)
     public List<RatingDto> getAllRatingsForTour(@PathVariable(value = "tourId") int tourId){
         LOGGER.info("GET /ratings/tour", tourId);
         Tour tour = verifyTour(tourId);
@@ -85,6 +87,7 @@ public class TourRatingController {
      * @return Requested page of Tour Ratings as RatingDto's
      */
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public Page<RatingDto> getRatings(@PathVariable(value = "tourId") int tourId, Pageable pageable){
         Tour tour = verifyTour(tourId);
         return tourRatingService.getRatings(tour, pageable);
@@ -97,6 +100,7 @@ public class TourRatingController {
      * @return Tuple of "average" and the average value.
      */
     @GetMapping(path = "/average")
+    @ResponseStatus(HttpStatus.OK)
     public Map<String, Double> getAverage(@PathVariable(value = "tourId") int tourId){
         LOGGER.info("GET /tours/{}/ratings/average", tourId);
         Tour tour = verifyTour(tourId);
@@ -110,6 +114,7 @@ public class TourRatingController {
      * @return the found TourRating
      * @throws NoSuchElementException if no TourRating found
      */
+    @ResponseStatus(HttpStatus.FOUND)
     private TourRating verifyTourRating(int tourId, int customerId) throws NoSuchElementException {
         Tour tour =  verifyTour(tourId);
         return tourRatingService.verifyTourRating(tour, customerId);
@@ -123,6 +128,7 @@ public class TourRatingController {
      * @return The modified Rating DTO.
      */
     @PutMapping
+    @ResponseStatus(HttpStatus.OK)
     public RatingDto update(@PathVariable(value = "tourId") int tourId, @RequestBody @Validated RatingDto ratingDto) {
         LOGGER.info("PUT /tours/{}/ratings", tourId);
         TourRating rating = verifyTourRating(tourId, ratingDto.getCustomerId());
@@ -137,6 +143,7 @@ public class TourRatingController {
      * @return The modified Rating DTO.
      */
     @PatchMapping
+    @ResponseStatus(HttpStatus.OK)
     public RatingDto updateWithPatch(@PathVariable(value = "tourId") int tourId, @RequestBody @Validated RatingDto ratingDto) {
         LOGGER.info("PATCH /tours/{}/ratings", tourId);
         TourRating rating = verifyTourRating(tourId, ratingDto.getCustomerId());
@@ -150,6 +157,7 @@ public class TourRatingController {
      * @param customerId customer identifier
      */
     @DeleteMapping(path = "/{customerId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable(value = "tourId") int tourId, @PathVariable(value = "customerId") int customerId) {
         LOGGER.info("DELETE /tours/{}/ratings/{}", tourId, customerId);
         TourRating rating = verifyTourRating(tourId, customerId);
@@ -163,6 +171,7 @@ public class TourRatingController {
      * @return the found Tour
      * @throws NoSuchElementException if no Tour found.
      */
+    @ResponseStatus(HttpStatus.FOUND)
     private Tour verifyTour(int tourId) throws NoSuchElementException {
         return tourRatingService.verifyTour(tourId);
     }
