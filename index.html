@@ -10,6 +10,12 @@
 <body>
 <div id="swagger-ui"></div> <!-- Div to hold the UI component -->
 <script>
+    
+    let header = new Headers({
+    'Access-Control-Allow-Origin':'*',
+    'Content-Type': 'multipart/form-data'
+});
+    
     window.onload = function () {
         // Begin Swagger UI call region
         const ui = SwaggerUIBundle({
@@ -17,11 +23,8 @@
             //enableCORS: false,
             dom_id: '#swagger-ui',
             //validatorUrl : null,
-            requestInterceptor:
-              (request) => {
-                request.credentials = 'include'
-                return request;
-              },
+            mode: 'cors',
+            header: header,
             deepLinking: true,
             presets: [
                 SwaggerUIBundle.presets.apis,
