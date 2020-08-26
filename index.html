@@ -21,13 +21,16 @@
     window.onload = function () {
         // Begin Swagger UI call region
         const ui = SwaggerUIBundle({
-            url: "https://github.com/nicolaslopez82/java-springboot-docker-microservices-skeleton/blob/master/src/main/resources/openapi.json", //Location of Open API spec in the repo
-            //enableCORS: false,
+            headers:{
+                'Access-Control-Allow-Origin':'*',
+                'Access-Control-Allow-Credentials', 'true',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: "https://github.com/nicolaslopez82/java-springboot-docker-microservices-skeleton/blob/master/src/main/resources/openapi.json", //Location of Open API spec in the repo            
             dom_id: '#swagger-ui',
-            mode: 'no-cors',
-            //headers:{
-            //'Access-Control-Allow-Origin':'*'
-            //},
+            //enableCORS: false,
+            //mode: 'no-cors',            
             //validatorUrl : null,
             //mode: 'cors',
             //header: header,
