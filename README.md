@@ -1,2 +1,35 @@
-# java-springboot-docker-microservice-skeleton
-Java SpringBoot Microservices Project made into the course from Linkedin (by Mary Ellen Bowman) but with my own update customizations. The goals are to update technologies and new concepts about micro-services with Java, Spring-Boot, Spring Data JPA, Spring Security, Spring REST, and Docker.
+# Java 8 Spring-Boot 2 Microservice Project
+
+The goals here are to update technologies and new concepts about micro-services:
+
+## The Swagger UI REST API Documentation
+
+
+`<link>` : <https://nicolaslopez82.github.io/java-springboot-docker-microservices-skeleton/>
+
+
+## Technologies and new concepts updated.
+
+* Java 8.
+* Spring-Boot 2.
+* Spring Data JPA.
+* Spring Security.
+* Spring REST.
+* Spring MVC.
+* Logger with LogBack Appender RollingFile.
+* Swagger UI.
+* OpenAPI v3.
+* JSON Web Token (JWT).
+* Password Encryption.
+* Mockito Testing.
+* JUnit Testing.
+* Integration Testing.
+* Hypermedia Driven RESTful.
+* Paging and Sorting.
+* Securing APIs.
+* Controlling APIs exposure.
+* Docker Image.
+* Docker Containers.
+* Docker Containers Databases.
+* Docker Migration Database with Flyway.
+* Docker Hub.
