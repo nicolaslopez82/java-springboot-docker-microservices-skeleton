@@ -7,6 +7,8 @@ The goals here are to update technologies and new concepts about micro-services:
 
 `<link>` : <https://nicolaslopez82.github.io/java-springboot-docker-microservices-skeleton/>
 
+[![](https://nicolaslopez82.github.io/java-springboot-docker-microservices-skeleton/swagger-ui.png)](https://nicolaslopez82.github.io/java-springboot-docker-microservices-skeleton "Swagger UI REST API Documentation")
+
 
 ## Technologies and new concepts updated.
 
