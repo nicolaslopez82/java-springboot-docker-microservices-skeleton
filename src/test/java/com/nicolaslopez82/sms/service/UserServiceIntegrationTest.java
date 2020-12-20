@@ -23,8 +23,8 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void signup() {
-        Optional<User> user = service.signup("tontoUsername", "tontoPassword", "john", "doe");
-        Assert.assertThat(user.get().getPassword(), not("tontoPassword"));
+        Optional<User> user = service.signup("fakeUsername", "fakepassword", "john", "doe");
+        Assert.assertThat(user.get().getPassword(), not("fakepassword"));
         System.out.println("Encoded Password Debug -> = " + user.get().getPassword());
     }
 }
