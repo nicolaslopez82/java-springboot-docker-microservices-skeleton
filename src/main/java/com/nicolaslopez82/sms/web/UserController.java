@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -23,22 +23,24 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/signin")
-    public Authentication login(@RequestBody @Valid LoginDto loginDto){
-        return userService.signin(loginDto.getUsername(), loginDto.getPassword());
+    public String login(@RequestBody @Valid LoginDto loginDto) {
+        return userService.signin(loginDto.getUsername(), loginDto.getPassword()).orElseThrow(()->
+                new HttpServerErrorException(HttpStatus.FORBIDDEN, "Login Failed"));
     }
 
     @PostMapping("/signup")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
     public User signup(@RequestBody @Valid LoginDto loginDto){
         return userService.signup(loginDto.getUsername(), loginDto.getPassword(), loginDto.getFirstName(),
-                loginDto.getLastName()).orElseThrow(() -> new RuntimeException("User already exists"));
+                loginDto.getLastName()).orElseThrow(() -> new HttpServerErrorException(HttpStatus.BAD_REQUEST,"User already exists"));
     }
 
-//    @GetMapping("/users")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    public List<User> getAllUsers() {
-//        return userService.getAll();
-//    }
+    @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<User> getAllUsers() {
+        return userService.getAll();
+    }
 
     /**
      * Exception handler if NoSuchElementException is thrown in this Controller
@@ -46,10 +48,10 @@ public class UserController {
      * @param ex exception
      * @return Error message String.
      */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(RuntimeException.class)
-    public String return400(RuntimeException ex) {
-        LOGGER.error("Unable to complete transaction", ex);
-        return ex.getMessage();
-    }
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(RuntimeException.class)
+//    public String return400(RuntimeException ex) {
+//        LOGGER.error("Unable to complete transaction", ex);
+//        return ex.getMessage();
+//    }
 }
