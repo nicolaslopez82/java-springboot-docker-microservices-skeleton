@@ -68,4 +68,20 @@ public class JwtRequestHelper {
         headers.add("Authorization", "Bearer " + token);
         return headers;
     }
+
+    /**
+     * Generate the appropriate headers for JWT Authentication.
+     *
+     * @param roleName role identifier
+     * @return Http Headers for Content-Type and Authorization
+     */
+    public  HttpHeaders withRole(String roleName){
+        HttpHeaders headers = new HttpHeaders();
+        Role r = new Role();
+        r.setRoleName(roleName);
+        String token =  jwtProvider.createToken("anonymous", Arrays.asList(r));
+        headers.setContentType(APPLICATION_JSON);
+        headers.add("Authorization", "Bearer " + token);
+        return headers;
+    }
 }

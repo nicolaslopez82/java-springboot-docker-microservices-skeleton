@@ -37,7 +37,7 @@ public class RatingDto {
      * @param comment comment
      * @param customerId customer identifier
      */
-    private RatingDto(Integer score, String comment, Integer customerId) {
+    public RatingDto(Integer score, String comment, Integer customerId) {
         this.score = score;
         this.comment = comment;
         this.customerId = customerId;
